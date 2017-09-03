@@ -35,7 +35,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 		<!-- habilita hot deploy -->
 			<groupId>org.springframework.boot</groupId>
@@ -52,6 +51,11 @@
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
 		    <scope>runtime</scope>
+		</dependency>
+		<!-- Migrações - Flyway -->
+		<dependency>
+		    <groupId>org.flywaydb</groupId>
+		    <artifactId>flyway-core</artifactId>
 		</dependency>
 		
 	</dependencies>

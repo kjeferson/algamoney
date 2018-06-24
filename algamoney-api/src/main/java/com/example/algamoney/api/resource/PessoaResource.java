@@ -6,9 +6,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,45 +18,40 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.algamoney.api.model.Categoria;
-import com.example.algamoney.api.repository.CategoriaRepository;
+import com.example.algamoney.api.model.Pessoa;
+import com.example.algamoney.api.repository.PessoaRepository;
 
-@RestController //Controlador Rest, o retorno ja vai vir como json
-@RequestMapping("/categorias")//Mapeamento da requisição
-public class CategoriaResource {
+@RestController
+@RequestMapping("/pessoas")
+public class PessoaResource {
 
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private PessoaRepository pessoaRepository;
 	
-	@GetMapping // Mapeamento do get para categorias (Chamadas GET)
-	public List<Categoria> listar(){
-		return categoriaRepository.findAll();
+	@GetMapping
+	public List<Pessoa> listar(){
+		return pessoaRepository.findAll();
 	}
 	
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)// ao terminar a execução deste metódo, retorna o status 201 created
-	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
-		Categoria categoriaSalva = categoriaRepository.save(categoria);
+	@ResponseStatus(HttpStatus.CREATED)
+	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
+		Pessoa pessoaSalva = pessoaRepository.save(pessoa);
 		
 		//URI para recuperar o recurso criado para retornar na Header
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
-				.buildAndExpand(categoriaSalva.getCodigo()).toUri();
+				.buildAndExpand(pessoaSalva.getCodigo()).toUri();
 		//Setar a Header Location com a uri
 		response.setHeader("Location", uri.toASCIIString());
 
 		//retorna a uri criada com status created e o recurso criado
-		return ResponseEntity.created(uri).body(categoriaSalva);
+		return ResponseEntity.created(uri).body(pessoaSalva);
 	}
 	
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscarPeloCodigo(@PathVariable Long codigo) {
-		 Categoria categoria = categoriaRepository.findOne(codigo);
-		 return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
+		 Pessoa pessoa = pessoaRepository.findOne(codigo);
+		 return pessoa != null ? ResponseEntity.ok(pessoa) : ResponseEntity.notFound().build();
 	}
-	
-	
-/*	@GetMapping("/outro") // Se tiver mais de um get, adicionar a referencia
-	public String outro(){
-		return "OK";
-	}*/
+
 }

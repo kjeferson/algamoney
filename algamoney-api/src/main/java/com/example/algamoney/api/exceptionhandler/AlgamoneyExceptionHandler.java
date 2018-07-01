@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
-
 //Captura exceções de respostas das entidades
 @ControllerAdvice //observa toda a aplicação
 public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
@@ -37,7 +35,7 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
 	
-	//Personalizando mensagens de erro para métodos com argumento invalido (@NotNull,@Valid)
+	//Seta a mensagem a partir da properties passando o parametro mensagem.invalida e localeContextholder como local
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
@@ -48,18 +46,18 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	private List<Erro> criarListaDeErros(BindingResult bindingResult) {
 		List<Erro> erros = new ArrayList<>();
-		
 		//Capturando a lista de erros para jogar na mensagem
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
 			String mensagemUsuario = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
 			String mensagemDesenvolvedor = fieldError.toString();
 			erros.add(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		}
-		
+			
 		return erros;
 	}
 	
-	public static class Erro{
+	public static class Erro {
+		
 		private String mensagemUsuario;
 		private String mensagemDesenvolvedor;
 		
@@ -71,16 +69,11 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		public String getMensagemUsuario() {
 			return mensagemUsuario;
 		}
-		public void setMensagemUsuario(String mensagemUsuario) {
-			this.mensagemUsuario = mensagemUsuario;
-		}
+
 		public String getMensagemDesenvolvedor() {
 			return mensagemDesenvolvedor;
 		}
-		public void setMensagemDesenvolvedor(String mensagemDesenvolvedor) {
-			this.mensagemDesenvolvedor = mensagemDesenvolvedor;
-		}
-		
 		
 	}
+	
 }

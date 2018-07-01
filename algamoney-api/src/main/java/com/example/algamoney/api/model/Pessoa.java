@@ -9,22 +9,22 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Pessoa")
+@Table(name = "pessoa")
 public class Pessoa {
 
-	@Id	
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
-	
-	@NotNull	
+
+	@NotNull
 	private String nome;
-	
+
 	@Embedded
 	private Endereco endereco;
-	
+
 	@NotNull
-	private boolean ativo;
-	
+	private Boolean ativo;
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -40,20 +40,20 @@ public class Pessoa {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-	
+
 	public Endereco getEndereco() {
 		return endereco;
 	}
-	
+
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
-	
-	public boolean isAtivo() {
+
+	public Boolean getAtivo() {
 		return ativo;
 	}
-	
-	public void setAtivo(boolean ativo) {
+
+	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
 
@@ -81,6 +81,5 @@ public class Pessoa {
 			return false;
 		return true;
 	}
-
 	
 }

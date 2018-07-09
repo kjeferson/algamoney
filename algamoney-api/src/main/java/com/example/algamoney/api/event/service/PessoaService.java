@@ -29,7 +29,7 @@ public class PessoaService {
 		pessoaRepository.save(pessoaSalva);
 	}
 	
-	private Pessoa buscarPessoaPeloCodigo(Long codigo) {
+	public Pessoa buscarPessoaPeloCodigo(Long codigo) {
 		Pessoa pessoaSalva = pessoaRepository.findOne(codigo);
 		
 		//Se pessoaSalva for null, lançar EmptyResultDataAccessException e definir o tamanho esperado, neste caso 1 pessoa

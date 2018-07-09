@@ -77,6 +77,12 @@
 			<version>3.4</version>
 		</dependency>
 		
+		<!-- Biblioteca para trabalhar com Metamodel, utilizada 1x só para baixar no repositorio do maven -->
+		<!--dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency-->
+		
 	</dependencies>
 
 	<build>

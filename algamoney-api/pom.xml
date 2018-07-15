@@ -35,7 +35,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 		<!-- habilita hot deploy -->
 			<groupId>org.springframework.boot</groupId>
@@ -53,6 +52,36 @@
 		    <artifactId>mysql-connector-java</artifactId>
 		    <scope>runtime</scope>
 		</dependency>
+		<!-- Migrações - Flyway -->
+		<dependency>
+		    <groupId>org.flywaydb</groupId>
+		    <artifactId>flyway-core</artifactId>
+		</dependency>
+		
+		<!-- Hibernate Java 8 Support -->
+		<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-java8</artifactId>
+		</dependency>
+		
+		<!-- Suporte do Jackson para as datas do Java 8 -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		
+		<!-- Biblioteca que pega a causa da exceção -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
+		</dependency>
+		
+		<!-- Biblioteca para trabalhar com Metamodel, utilizada 1x só para baixar no repositorio do maven -->
+		<!--dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency-->
 		
 	</dependencies>
 

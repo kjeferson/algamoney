@@ -25,15 +25,17 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 			.withClient("angular")// usuario do cliente
 			.secret("@ngul@r0") // senha do cliente
 			.scopes("read","write") // permissões
-			.authorizedGrantTypes("password") // implementação oauth do tipo password flux
-			.accessTokenValiditySeconds(1800); //define quantos segundos o token vai permanecer ativo, neste caso 1800seg ou 30min 
-		}
+			.authorizedGrantTypes("password","refresh_token") // implementação oauth do tipo password flux, e refresh token para implementar o refresh com acces token
+			.accessTokenValiditySeconds(20) //define quantos segundos o token vai permanecer ativo, ex: 1800seg ou 30min 
+			.refreshTokenValiditySeconds(3600 * 24); // define validade do refresh para 1 dia
+	}
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints
 			.tokenStore(tokenStore()) //define onde o token será guardado
 			.accessTokenConverter(accessTokenConverter())
+			.reuseRefreshTokens(false)//enquanto o refresh_token não expirar eu posso usar o access token
 			.authenticationManager(authenticationManager); // valida a autenticação
 	}
 	

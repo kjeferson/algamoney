@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +31,7 @@ public class CategoriaResource {
 	@Autowired
 	private ApplicationEventPublisher publisher; // publicador de evento de aplicação
 
-	
+	//@CrossOrigin(maxAge = 10, origins = {"http://localhost:8000"})// maxAge> requisição inicial com OPTIONS, origins > permite exceção da origem especificada
 	@GetMapping // Mapeamento do get para categorias (Chamadas GET)
 	public List<Categoria> listar() {
 		return categoriaRepository.findAll();

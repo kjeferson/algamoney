@@ -22,12 +22,19 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-			.withClient("angular")// usuario do cliente
-			.secret("@ngul@r0") // senha do cliente
-			.scopes("read","write") // permissões
-			.authorizedGrantTypes("password","refresh_token") // implementação oauth do tipo password flux, e refresh token para implementar o refresh com acces token
-			.accessTokenValiditySeconds(20) //define quantos segundos o token vai permanecer ativo, ex: 1800seg ou 30min 
-			.refreshTokenValiditySeconds(3600 * 24); // define validade do refresh para 1 dia
+				.withClient("angular")// usuario do cliente
+				.secret("@ngul@r0") // senha do cliente
+				.scopes("read","write") // permissões
+				.authorizedGrantTypes("password","refresh_token") // implementação oauth do tipo password flux, e refresh token para implementar o refresh com acces token
+				.accessTokenValiditySeconds(1800) //define quantos segundos o token vai permanecer ativo, ex: 1800seg ou 30min 
+				.refreshTokenValiditySeconds(3600 * 24) // define validade do refresh para 1 dia
+			.and()
+				.withClient("mobile")// usuario do cliente
+				.secret("m0b1l30") // senha do cliente
+				.scopes("read") // permissões
+				.authorizedGrantTypes("password","refresh_token") // implementação oauth do tipo password flux, e refresh token para implementar o refresh com acces token
+				.accessTokenValiditySeconds(1800) //define quantos segundos o token vai permanecer ativo, ex: 1800seg ou 30min 
+				.refreshTokenValiditySeconds(3600 * 24); // define validade do refresh para 1 dia
 	}
 	
 	@Override

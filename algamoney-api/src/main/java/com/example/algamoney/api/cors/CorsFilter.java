@@ -11,9 +11,12 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+
+import com.example.algamoney.api.config.properties.AlgamoneyApiProperty;
 /**
  * Class para criar Filtro do Cors, adicionando apenas Headers
  * @author Jeferson
@@ -23,8 +26,9 @@ import org.springframework.stereotype.Component;
 @Order(Ordered.HIGHEST_PRECEDENCE) //Filtro com ordem de prioridade bem alta, para ser executado logo de inicio
 public class CorsFilter implements Filter {
 	
-	private String originPermitida = "http://localhost:8000"; // TODO: Configurar para diferentes ambientes
-
+	@Autowired
+	private AlgamoneyApiProperty algamoneyApiProperty;
+	
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
 			throws IOException, ServletException {
@@ -33,13 +37,13 @@ public class CorsFilter implements Filter {
 		HttpServletResponse response = (HttpServletResponse) resp;
 		
 		//Permitir Origin
-		response.setHeader("Access-Control-Allow-Origin", originPermitida);
+		response.setHeader("Access-Control-Allow-Origin", algamoneyApiProperty.getOriginPermitida());
 		//Permitir que o Cookie do refresh token seja enviado
         response.setHeader("Access-Control-Allow-Credentials", "true");
 		
         //Se originPermitida for igual a origin que veio do browser e for uma requisição OPTIONS, permitir
         //se não, não permitir e o Cors não vai estar habilitado
-		if ("OPTIONS".equals(request.getMethod()) && originPermitida.equals(request.getHeader("Origin"))) {
+		if ("OPTIONS".equals(request.getMethod()) && algamoneyApiProperty.getOriginPermitida().equals(request.getHeader("Origin"))) {
 			//Permitir métodos HTTP: POST, GET, DELETE, PUT, OPTIONS
 			response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
 			//Permitir os headers: Authorization, Content-Type, Accept

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.algamoney.api.event.RecursoCriadoEvent;
-import com.example.algamoney.api.event.service.PessoaService;
+import com.example.algamoney.api.service.PessoaService;
 import com.example.algamoney.api.model.Pessoa;
 import com.example.algamoney.api.repository.PessoaRepository;
 

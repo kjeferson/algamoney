@@ -3,6 +3,7 @@ package com.example.algamoney.api.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -17,6 +18,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
+@Profile("oauth-security")// utilizar no application.properties spring.profiles.active=oauth-security caso for usar a autenticação com OAuth 2
 @Configuration
 @EnableWebSecurity
 @EnableResourceServer
@@ -42,7 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter{
 			.anyRequest().authenticated() // exceto categorias todos só podem acessar com autenticação
 			.and()
 		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and() // para a aplicação não manter estado, não vai ter sessão nenhuma no servidor
-		.csrf().disable(); // desabilita cross side request for j, para evitar script com injection para web, como não estamos usando web, não é necessário usar
+		.csrf().disable(); // desabilita cross side request 4j, para evitar script com injection para web, como não estamos usando web, não é necessário usar
 	}
 	
 	@Override

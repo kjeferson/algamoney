@@ -18,7 +18,12 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.example.algamoney.api.config.token.CustomTokenEnhancer;
-
+/**
+ * Classe utilizada para fazer a autenticação OAuth2
+ * @author Jeferson
+ *
+ */
+@Profile("oauth-security")// utilizar no application.properties spring.profiles.active=oauth-security caso for usar a autenticação com OAuth 2
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {

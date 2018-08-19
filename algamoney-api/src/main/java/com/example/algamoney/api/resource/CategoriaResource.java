@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,13 +31,16 @@ public class CategoriaResource {
 	@Autowired
 	private ApplicationEventPublisher publisher; // publicador de evento de aplicação
 
-	
+	//@CrossOrigin(maxAge = 10, origins = {"http://localhost:8000"})// maxAge> requisição inicial com OPTIONS, origins > permite exceção da origem especificada
 	@GetMapping // Mapeamento do get para categorias (Chamadas GET)
+	//hasAuthority: Permissão do usuário, #oauth2.hasScope: permissão do cliente
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')and #oauth2.hasScope('read')")
 	public List<Categoria> listar() {
 		return categoriaRepository.findAll();
 	}
 	
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_CATEGORIA') and #oauth2.hasScope('write')")
 	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
 		Categoria categoriaSalva = categoriaRepository.save(categoria);
 		
@@ -45,6 +49,7 @@ public class CategoriaResource {
 	}
 	
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_CATEGORIA')and #oauth2.hasScope('read')")
 	public ResponseEntity<Categoria> buscarPeloCodigo(@PathVariable Long codigo) {
 		 Categoria categoria = categoriaRepository.findOne(codigo);
 		 return categoria != null ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();

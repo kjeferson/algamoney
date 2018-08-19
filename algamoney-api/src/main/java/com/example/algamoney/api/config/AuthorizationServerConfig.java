@@ -1,16 +1,23 @@
 package com.example.algamoney.api.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import com.example.algamoney.api.config.token.CustomTokenEnhancer;
 
 @Configuration
 @EnableAuthorizationServer
@@ -39,9 +46,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		//Token com mais detalhes
+		TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+		//Cadeia de objetos que trabalham com os tokens
+		tokenEnhancerChain.setTokenEnhancers(Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+		
 		endpoints
 			.tokenStore(tokenStore()) //define onde o token será guardado
-			.accessTokenConverter(accessTokenConverter())
+			//.accessTokenConverter(accessTokenConverter())
+			.tokenEnhancer(tokenEnhancerChain)
 			.reuseRefreshTokens(false)//enquanto o refresh_token não expirar eu posso usar o access token
 			.authenticationManager(authenticationManager); // valida a autenticação
 	}
@@ -59,4 +72,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		return new JwtTokenStore(accessTokenConverter());
 	}
 	
+	@Bean
+	public TokenEnhancer tokenEnhancer() {
+	    return new CustomTokenEnhancer();
+	}
 }

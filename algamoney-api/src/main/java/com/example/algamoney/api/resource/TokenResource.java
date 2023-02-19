@@ -4,14 +4,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.algamoney.api.config.property.AlgamoneyApiProperty;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.algamoney.api.config.properties.AlgamoneyApiProperty;
-
 /**
  * Classe para remover o cookie do refresh token, para realizar o logout
  * @author Jeferson
@@ -20,10 +19,10 @@ import com.example.algamoney.api.config.properties.AlgamoneyApiProperty;
 @RestController
 @RequestMapping("/tokens")
 public class TokenResource {
-
+	
 	@Autowired
 	private AlgamoneyApiProperty algamoneyApiProperty;
-	
+
 	//revoke: revogar
 	@DeleteMapping("/revoke")
 	public void revoke(HttpServletRequest req, HttpServletResponse resp) {

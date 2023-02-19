@@ -12,33 +12,23 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-/**
- * Classe utilizada para fazer a autenticação Basic Security
- * @author Jeferson
- *
- */
-@Profile("basic-security") //utilizar no application.properties spring.profiles.active=oauth-security caso for usar a autenticação Basic Security
+@SuppressWarnings("deprecation")
+@Profile("basic-security")
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
-
+    
 	@Autowired
 	private UserDetailsService userDetailsService;
-	
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		//Utiliza o userDetailsService que é nosso AppUserDetailsService para buscar o usuario no banco e comparar com o login e usuário da tela
-		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-	}
-	
-	//Criptografia das senhas
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	//Configurando acesso para tipo basic
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 			.anyRequest().authenticated()
 			.and()
@@ -48,6 +38,12 @@ public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
 			.csrf().disable();
-	}
-	
+    }
+    
+  //Criptografia das senhas
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }

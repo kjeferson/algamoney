@@ -10,7 +10,7 @@ import com.example.algamoney.api.model.TipoLancamento;
  *
  */
 public class ResumoLancamento {
-
+    
 	private Long codigo;
 	private String descricao;
 	private LocalDate dataVencimento;

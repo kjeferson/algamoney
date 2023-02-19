@@ -1,4 +1,4 @@
-package com.example.algamoney.api.exceptionhandler;
+package com.example.algamoney.api.exceptionHandler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,33 +22,31 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-//Captura exceções de respostas das entidades
-@ControllerAdvice //observa toda a aplicação
+@ControllerAdvice
 public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
-	private MessageSource messageSource;// captura mensagens da message.properties
+	private MessageSource messageSource;
 	
 	@Override
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		//Seta a mensagem a partir da properties passando o parametro mensagem.invalida e localeContextholder como local
+		
 		String mensagemUsuario = messageSource.getMessage("mensagem.invalida", null, LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ex.getCause() != null ? ex.getCause().toString() : ex.toString();
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
-	
-	//Seta a mensagem a partir da properties passando o parametro mensagem.invalida e localeContextholder como local
+
+		
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-		//Criando lista de erros passando getBindingResult para capturar os erros
+		
 		List<Erro> erros = criarListaDeErros(ex.getBindingResult());
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
-	
-	//Tratamento de erro ao tentar deletar um objeto não existente
+		
 	@ExceptionHandler({ EmptyResultDataAccessException.class })
 	public ResponseEntity<Object> handleEmptyResultDataAccessException(EmptyResultDataAccessException ex, WebRequest request) {
 		String mensagemUsuario = messageSource.getMessage("recurso.nao-encontrado", null, LocaleContextHolder.getLocale());
@@ -56,10 +54,9 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		return handleExceptionInternal(ex, erros, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 	}
-	
-	//Tratamento de erro para operação não permitida (ex: null em campo foreign key)
-	@ExceptionHandler({DataIntegrityViolationException.class})
-	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request){
+		
+	@ExceptionHandler({ DataIntegrityViolationException.class } )
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request) {
 		String mensagemUsuario = messageSource.getMessage("recurso.operacao-nao-permitida", null, LocaleContextHolder.getLocale());
 		String mensagemDesenvolvedor = ExceptionUtils.getRootCauseMessage(ex);
 		List<Erro> erros = Arrays.asList(new Erro(mensagemUsuario, mensagemDesenvolvedor));
@@ -68,7 +65,7 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	private List<Erro> criarListaDeErros(BindingResult bindingResult) {
 		List<Erro> erros = new ArrayList<>();
-		//Capturando a lista de erros para jogar na mensagem
+		
 		for (FieldError fieldError : bindingResult.getFieldErrors()) {
 			String mensagemUsuario = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
 			String mensagemDesenvolvedor = fieldError.toString();
@@ -96,6 +93,6 @@ public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 			return mensagemDesenvolvedor;
 		}
 		
-	}
-	
+	}    
+    
 }

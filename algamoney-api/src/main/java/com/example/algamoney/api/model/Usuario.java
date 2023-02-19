@@ -13,6 +13,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "usuario")
 public class Usuario {
+
 	@Id
 	private Long codigo;
 

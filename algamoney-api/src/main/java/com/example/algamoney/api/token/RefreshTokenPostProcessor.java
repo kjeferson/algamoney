@@ -4,6 +4,8 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.example.algamoney.api.config.property.AlgamoneyApiProperty;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -17,8 +19,6 @@ import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
-import com.example.algamoney.api.config.properties.AlgamoneyApiProperty;
-
 /**
  * Processador depois do refresh token ter sido criado
  * Utilizado para interceptar o dado dentro do ResponseBodyAdvice, no caso OAuth2AccessToken
@@ -26,12 +26,13 @@ import com.example.algamoney.api.config.properties.AlgamoneyApiProperty;
  * @author Jeferson
  *
  */
+@SuppressWarnings("deprecation")
 @ControllerAdvice
-public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2AccessToken>{
+public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2AccessToken> {
 
 	@Autowired
 	private AlgamoneyApiProperty algamoneyApiProperty;
-	
+
 	@Override
 	public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
 		return returnType.getMethod().getName().equals("postAccessToken");
@@ -53,7 +54,7 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
 		
 		return body;
 	}
-	
+
 	private void removerRefreshTokenDoBody(DefaultOAuth2AccessToken token) {
 		token.setRefreshToken(null);
 	}
@@ -66,6 +67,4 @@ public class RefreshTokenPostProcessor implements ResponseBodyAdvice<OAuth2Acces
 		refreshTokenCookie.setMaxAge(2592000); // tempo de expiração do cookie em dias, neste caso 30 dias
 		resp.addCookie(refreshTokenCookie);
 	}
-
-
 }

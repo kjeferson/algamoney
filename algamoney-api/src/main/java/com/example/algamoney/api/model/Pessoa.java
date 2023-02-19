@@ -59,13 +59,13 @@ public class Pessoa {
 	public void setAtivo(Boolean ativo) {
 		this.ativo = ativo;
 	}
-
+	
 	@JsonIgnore //ignorar esta propriedade no json
 	@Transient	//ignorar esta propriedade no hibernate
 	public boolean isInativo() {
 		return !this.ativo;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -91,4 +91,5 @@ public class Pessoa {
 		return true;
 	}
 	
+    
 }
